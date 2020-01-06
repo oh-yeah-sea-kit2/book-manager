@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        CakePHP: the rapid development php framework:Users
+    </title>
+    <link href="/book_manager_1/cake3app/favicon.ico" type="image/x-icon" rel="icon"/>
+    <link href="/book_manager_1/cake3app/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+    <link rel="stylesheet" href="http://192.168.33.10/book_manager_1/cake3app/css/base.css"/>
+    <link rel="stylesheet" href="http://192.168.33.10/book_manager_1/cake3app/css/cake.css"/>
+</head>
+<body>
+    <nav class="top-bar expanded" data-topbar role="navigation">
+        <ul class="title-area large-3 medium-4 columns">
+            <li class="name">
+                <h1><a href="">Users</a></h1>
+            </li>
+        </ul>
+        <div class="top-bar-section">
+            <ul class="right">
+                <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
+                <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container clearfix">
+        <nav class="large-3 medium-4 columns" id="actions-sidebar">
+            <ul class="side-nav">
+                <li class="heading">Actions</li>
+                <li><a href="/book_manager_1/cake3app/users/add">New User</a></li>
+            </ul>
+        </nav>
+        <div class="users index large-9 medium-8 columns content">
+            <h3>Users</h3>
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=user_id">User</a>
+                        </th>
+                        <th scope="col">
+                            <a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=mail_address">Mail Address</a>
+                        </th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=user_name">User Name</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=is_admin">Is Admin</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=last_login_date">Last Login Date</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=login_count">Login Count</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=created">Created</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=insert_user_id">Insert User</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=modified">Modified</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=update_user_id">Update User</a></th>
+                        <th scope="col"><a href="/book_manager_1/cake3app/users?direction=asc&amp;sort=is_deleted">Is Deleted</a></th>
+                        <th scope="col" class="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2</td>
+                        <td>spyroach204@gmail.com</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>1</td>
+                        <td></td>
+                        <td>0</td>
+                        <td>4/29/18, 5:02 PM</td>
+                        <td>0</td>
+                        <td>4/29/18, 5:44 PM</td>
+                        <td>0</td>
+                        <td></td>
+                        <td class="actions">
+                            <a href="/book_manager_1/cake3app/users/view/2">View</a>                    <a href="/book_manager_1/cake3app/users/edit/2">Edit</a>                    <form name="post_5ae7f1632ab03124970171" style="display:none;" method="post" action="/book_manager_1/cake3app/users/delete/2"><input type="hidden" name="_method" value="POST"/></form><a href="#" onclick="if (confirm(&quot;Are you sure you want to delete # 2?&quot;)) { document.post_5ae7f1632ab03124970171.submit(); } event.returnValue = false; return false;">Delete</a>                </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="paginator">
+                    <ul class="pagination">
+                        <li class="prev disabled"><a href="" onclick="return false;">&lt; previous</a></li>                        <li class="next disabled"><a href="" onclick="return false;">next &gt;</a></li>                    </ul>
+                        <p>Page 1 of 1, showing 1 record(s) out of 1 total</p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>

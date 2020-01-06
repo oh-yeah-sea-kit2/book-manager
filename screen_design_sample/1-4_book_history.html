@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/base.css"/>
+    <link rel="stylesheet" href="./css/cake.css"/>
+    <style type="text/css">
+    .s-tbl tr:nth-child(even) {
+        background: #eee;
+    }
+    </style>
+    <title>
+        貸出返却履歴
+    </title>
+</head>
+<body>
+    <nav class="top-bar expanded" data-topbar role="navigation">
+        <ul class="title-area large-3 medium-4 columns">
+            <li class="name">
+                <h1>
+                    <a href="">i-Vinci</a>
+                </h1>
+            </li>
+        </ul>
+        <div class="top-bar-section">
+            <ul class="right">
+                <li><a target="_blank" href="">お問い合わせ</a></li>
+                <li><a target="_blank" href="">HELP</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container clearfix">
+        <nav class="large-3 medium-4 columns" id="actions-sidebar">
+            <ul class="side-nav">
+                <li class="heading">一般利用</li>
+                <li><a href=""><span class="glyphicon glyphicon-book"></span> 本を借りる</a></li>
+                <li><a href=""><span class="glyphicon glyphicon-book"></span> 本を返す</a></li>
+                <li><a href=""><span class="glyphicon glyphicon-search"></span> 本を探す</a></li>
+                <li><a href=""><span class="glyphicon glyphicon-file"></span> 貸出返却履歴</a></li>
+                <li><p></p></li>
+                <li><a href=""><span class="glyphicon glyphicon-user"></span> 新規ユーザ登録</a></li>
+                <li class="heading">管理</li>
+                <li><a href=""><span class="glyphicon glyphicon-cog"></span> ログイン</a></li>
+            </ul>
+        </nav>
+
+        <div class="users index large-9 medium-8 columns content">
+            <h3>貸出返却履歴(直近20件)</h3>
+            <table cellpadding="0" cellspacing="0" class="s-tbl">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</a></th>
+                        <th scope="col">書籍タイトル</th>
+                        <th scope="col">社員名</th>
+                        <th scope="col">貸出日</th>
+                        <th scope="col">返却予定日</th>
+                        <th scope="col">返却日</th>
+                        <th scope="col" class="actions">状態</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10</td>
+                        <td>数学ガールの秘密ノート　式とグラフ</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>クラッキングバイブル</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>クラッカー・プログラム大全</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>旅に出たくなる地図</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>集合知プログラミング</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>SF映画で学ぶインターフェースデザイン</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>リーダブルコード</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr style="background-color: red;">
+                        <td>3</td>
+                        <td>ものぐさ精神分析</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>延滞</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>最強最速アルゴリズマー養成講座</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>未返却</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>スラスラわかるPHP</td>
+                        <td>Kyohei Takeshita</td>
+                        <td>2018/04/30</td>
+                        <td>2018/05/08</td>
+                        <td>2018/05/01</td>
+                        <td>返却済み</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

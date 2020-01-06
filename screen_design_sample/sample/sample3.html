@@ -1,0 +1,668 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.12)">
+<title>尾道市立図書館</title>
+<link type="text/css" rel="stylesheet" href="https://www5.city.onomichi.hiroshima.jp/WebOpac/webopac/adult/styles/base.css">
+<link type="text/css" rel="stylesheet" href="adult/styles/color01.css">
+<link type="text/css" rel="alternate stylesheet" title="Fsmall" href="adult/styles/f_small.css">
+<link type="text/css" rel="alternate stylesheet" title="Fnormal" href="adult/styles/f_normal.css">
+<link type="text/css" rel="alternate stylesheet" title="Fbig" href="adult/styles/f_big.css">
+<script type="text/javascript" src="js/styleswitcher.js"></script>
+
+<link rel="stylesheet" type="text/css"  href="adult/styles/slimbox2.css" />
+<link rel="stylesheet" type="text/css" id="carouselstyle" href="adult/styles/jcarousel_loading.css" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/slimbox2.js"></script>
+<script type="text/javascript" src="js/jquery.jcarousel.min.js"></script>
+
+<script type="text/javascript" language="JavaScript">
+<!--
+//var disabled_flg = false;
+function list_author(authid) {
+//	if (disabled_flg == false) {
+//		disabled_flg = true;
+	document.searchlist.authorid.value = authid;
+	document.searchlist.page.value = "";
+	document.searchlist.allcount.value = "";
+	document.searchlist.keyword.value = "";
+	document.searchlist.keyflg.value = "";
+	document.searchlist.title.value = "";
+	document.searchlist.titflg.value = "";
+	document.searchlist.author.value = "*****";
+	document.searchlist.autflg.value = "";
+	document.searchlist.publish.value = "";
+	document.searchlist.pubflg.value = "";
+	document.searchlist.publishid.value = "";
+	document.searchlist.isbn.value = "";
+	document.searchlist.publiy1.value = "";
+	document.searchlist.publiy3.value = "";
+	document.searchlist.bunrui.value = "";
+	document.searchlist.bunruicode.value = "";
+	document.searchlist.titleid.value = "";
+	document.searchlist.gnocntcd.value = "";
+	document.searchlist.gcntcd.value = "";
+	document.searchlist.gtype.value = "";
+	document.searchlist.histname.value = "";
+	document.searchlist.histnum.value = "1";
+	document.searchlist.listtype.value = "1";
+	document.searchlist.submit();
+//	}
+}
+function move_title(rownum) {
+//	if (disabled_flg == false) {
+//		disabled_flg = true;
+	document.searchdetail.screen.value = "142";
+	document.searchdetail.rownum.value = rownum;
+	document.searchdetail.submit();
+//	}
+}
+
+function action_reserve(reserveType) {
+	document.regist.reserve_type.value = reserveType;
+    document.regist.submit();
+}
+
+
+
+
+jQuery.noConflict();
+
+jQuery(document).ready(function(){
+	jQuery("#relatedproduct").jcarousel({
+		size : 5,
+		visible : 5,
+	 	scroll: 5,
+	 	itemLoadCallback: getRelatedProductData('1', '', 'https://images-na.ssl-images-amazon.com/images/G/09/extranet/associates/buttons/remote-buy-jp7._V192237332_.gif', '関連情報を表示できませんでした。', '(詳細情報はありません)', 'adult/images/bcover_sim_bg.png', 'adult', '1525181967380')
+	 	
+	});
+});
+
+function getRelatedProductData(detailLinkFlg, asin, amazonLinkLogoUrl, relatedProductMsg, labeldetailLink, imagePath, target, token){
+	//リクエストURL作成
+	var url = "getbook.do?";
+	var dataType = "getDataType=RelatedProduct";
+	var idType = "idType=ASIN";
+	var id = "id=" + asin;
+	var tkn = "token=" + token;
+	url = url + dataType + "&" + idType + "&" + id + "&" + tkn;
+
+	// ASIN取得判定
+	if (asin != null && asin.length > 0) {
+		// ASINが取得できた場合 非同期通信を実施
+		jQuery.ajax({
+			url: url,
+			cache: false,
+			dataType: "json",
+			success: function(jsonData){
+				var json = eval(jsonData);
+
+				if (json != null && json.errorCode == 0) {
+					var bookList = json.bookList;
+
+					var carouselIndex = 0;
+
+					var carousel = jQuery('#relatedproduct').data('jcarousel');
+					carousel.lock();
+
+					for (var i = 0; i < bookList.length; i++) {
+						// ISBN存在チェック
+						if (bookList[i].isbn != null  && bookList[i].isbn.length > 0) {
+							// タイトル設定
+							var title = null;
+							var bookCoverUrl = null;
+
+							// 画像URL設定
+							if (bookList[i].bookCoverUrl != null && bookList[i].bookCoverUrl.length > 0) {
+								bookCoverUrl = bookList[i].bookCoverUrl;
+							} else {
+								// NoImage画像
+								bookCoverUrl = imagePath;
+							}
+							// 画像・タイトルタグ作成
+							var bookImgTag = null;
+							var msg = null;
+							var titleTag = null;
+
+							// 詳細画面へのLink有効設定
+							if(detailLinkFlg != 0) {
+								// タイトルコード有無チェック
+								if(bookList[i].tilcod != null && bookList[i].tilcod.length > 0){
+									// 詳細画面へのLink設定
+									// 書籍表紙タグ作成
+									bookImgTag = document.createElement("a");
+									bookImgTag.href = "javascript:relatedProduct_detail('"+bookList[i].tilcod+"');";
+									bookImgTag.target = "_self";
+
+									var imgTag = document.createElement("img");
+									imgTag.src = bookCoverUrl;
+									if(bookList[i].title != null && bookList[i].title.length > 0) {
+										title = bookList[i].title;
+										imgTag.alt = title;
+									}
+									imgTag.style.border = "none";
+									bookImgTag.appendChild(imgTag);
+									bookImgTag.appendChild(document.createElement("br"));
+									
+									// タイトルタグ作成
+									if(bookList[i].title != null && bookList[i].title.length > 0) {
+										titleTag = document.createElement("a");
+										titleTag.href = "javascript:relatedProduct_detail('"+bookList[i].tilcod+"');";
+										titleTag.target = "_self";
+
+										var text = document.createTextNode(title);
+										var p = document.createElement("p");
+										p.appendChild(text);
+										titleTag.appendChild(p);
+									}
+
+								} else {
+									// Amazon詳細ページへのLink設定
+									// 書籍表紙タグ作成
+									bookImgTag = document.createElement("img");
+									var labelDetailLink = document.createTextNode(labeldetailLink);
+									msg = document.createElement("p");
+
+									// タイトルタグ作成
+									if(bookList[i].title != null && bookList[i].title.length > 0) {
+										title = bookList[i].title;
+										var text = document.createTextNode(title);
+										msg.appendChild(text);
+										msg.appendChild(document.createElement("br"));
+									}
+
+									msg.appendChild(labelDetailLink);
+									bookImgTag.src = bookCoverUrl;
+									if(bookList[i].title != null && bookList[i].title.length > 0) {
+										bookImgTag.alt = title;
+									}
+								}
+							} else {
+							//詳細画面へのLink無効
+								// 書籍表紙タグ作成
+								bookImgTag = document.createElement("a");
+								bookImgTag.href = bookList[i].amazonDetailUrl;
+								bookImgTag.target = "_blank";
+
+								var imgTag = document.createElement("img");
+								imgTag.src = bookCoverUrl;
+
+								// タイトルタグ作成
+								if(bookList[i].title != null && bookList[i].title.length > 0) {
+									title = bookList[i].title;
+									imgTag.alt = title;
+
+									var text = document.createTextNode(title);
+									titleTag = document.createElement("p");
+									titleTag.appendChild(text);
+								}
+
+								imgTag.style.border = "none";
+								bookImgTag.appendChild(imgTag);
+								bookImgTag.appendChild(document.createElement("br"));
+							}
+						// AmazonLinkLogoタグ作成
+							if (bookList[i].amazonDetailUrl != null && bookList[i].amazonDetailUrl.length > 0) {
+								var amazonImgTag = document.createElement("img");
+								var amazonLink =  document.createElement("a");
+								amazonLink.href =  bookList[i].amazonDetailUrl;
+								amazonLink.target = "_blank";
+								amazonLink.className= "amz_sim_link";
+
+								amazonImgTag.src = amazonLinkLogoUrl;
+								amazonImgTag.style.border = "none";
+								amazonLink.appendChild(amazonImgTag);
+							}
+					// carouselに作成したタグを追加
+						var spanTag = document.createElement("span");
+						spanTag.appendChild(bookImgTag);
+						// 詳細情報が存在しない場合 改行追加
+						if (msg != null) {
+							spanTag.appendChild(document.createElement("br"));
+						}
+						// Amazon詳細ページが存在する場合 AmazonLinkLogoを追加
+						if (bookList[i].amazonDetailUrl != null && bookList[i].amazonDetailUrl.length > 0) {
+							spanTag.appendChild(amazonLink);
+						}
+						
+						if (titleTag != null) {
+							spanTag.appendChild(titleTag);
+						}
+						// 詳細情報が存在しない場合 メッセージを追加
+						if (msg != null) {
+							spanTag.appendChild(msg);
+						}
+
+						// ISBNが存在する関連情報のみ表示
+						carouselIndex = carouselIndex + 1;
+						jQuery('#relatedproduct').jcarousel('add',carouselIndex,spanTag);
+
+						}
+					}
+
+					carousel.unlock();
+					carousel.size(carouselIndex);
+					carousel.setup();
+
+					// スタイルシートの変更
+					if (target == "child") {
+						document.getElementById('carouselstyle').href = "child/styles/jcarousel.css";
+					} else {
+						document.getElementById('carouselstyle').href = "adult/styles/jcarousel.css";
+					}
+
+				} else {
+					// エラーメッセージを表示
+					var text = document.createTextNode(relatedProductMsg);
+					var div = document.getElementById('carouselList');
+					div.style.display="none";
+
+					var errorMsg = document.createElement("p");
+					errorMsg.appendChild(text);
+					errorMsg.align = "center";
+					errorMsg.style.color = "silver";
+					document.getElementById('carousel').appendChild(errorMsg);
+				}
+			},
+			error: function(jsonData) {
+
+			}
+		});
+	} else {
+		// ASIN未取得時 エラーメッセージを表示
+		var text = document.createTextNode(relatedProductMsg);
+		var div = document.getElementById('carouselList');
+		div.style.display="none";
+
+		var errorMsg = document.createElement("p");
+		errorMsg.appendChild(text);
+		errorMsg.align = "center";
+		errorMsg.style.color = "silver";
+		document.getElementById('carousel').appendChild(errorMsg);
+	}
+}
+
+function relatedProduct_detail(biblioid) {
+	document.relatedProductDetail.biblioid.value = biblioid;
+	document.relatedProductDetail.isRelatedProduct.value =1;
+	document.relatedProductDetail.submit();
+}
+
+var wndObj = null;
+function openReviewWindow(){
+	if (wndObj == null || wndObj.closed) {
+		wndObj= window.open('$srch_dtl.reviewUrl','reviewWindow','width=500,height=600,scrollbars=yes,resizable=yes,dependent=yes');
+	}else {
+		wndObj.location.href='about:blank';
+		wndObj.location.href='$srch_dtl.reviewUrl';
+	}
+	wndObj.focus();
+}
+
+//-->
+</script>
+
+</head>
+<body>
+<!-- #masthead -->
+				<a name="top"></a>
+	<div id="masthead">
+		<div class="title">
+			<h1><a href="/tosyokan/top.html" target="_top">尾道市立図書館</a></h1>
+		</div>
+		<div class="control">
+			<div class="font_control">
+				<strong>文字サイズの変更</strong><br>
+				<a href="javascript:void(0);" onclick="setActiveStyleSheet('Fsmall'); return false;" class="f_small"><p>小</p></a>
+				<a href="javascript:void(0);" onclick="setActiveStyleSheet('Fnormal'); return false;" class="f_normal"><p>中</p></a>
+				<a href="javascript:void(0);" onclick="setActiveStyleSheet('Fbig'); return false;" class="f_big"><p>大</p></a>
+			</div>
+					<div class="login_control">
+				<strong>ログイン情報</strong><br>
+						<div class="msg">
+					ログアウトしています
+				</div>
+							<a href="login.do" class="login">ログイン</a>
+								</div>
+			</div>
+	</div>
+<!-- /#masthead -->
+<form name="searchlist" action="searchlist.do" target="_self" method="post">
+	<input type="hidden" name="page" value="">
+	<input type="hidden" name="count" value="">
+	<input type="hidden" name="allcount" value="">
+	<input type="hidden" name="keyword" value="">
+	<input type="hidden" name="keyflg" value="">
+	<input type="hidden" name="title" value="">
+	<input type="hidden" name="titflg" value="">
+	<input type="hidden" name="author" value="">
+	<input type="hidden" name="autflg" value="">
+	<input type="hidden" name="authorid" value="">
+	<input type="hidden" name="publish" value="">
+	<input type="hidden" name="pubflg" value="">
+	<input type="hidden" name="publishid" value="">
+	<input type="hidden" name="isbn" value="">
+	<input type="hidden" name="publiy1" value="">
+	<input type="hidden" name="publiy3" value="">
+	<input type="hidden" name="bunrui" value="">
+	<input type="hidden" name="bunruicode" value="">
+	<input type="hidden" name="syubetu" value="">
+	<input type="hidden" name="kan" value="">
+	<input type="hidden" name="kanflg" value="">
+	<input type="hidden" name="media" value="">
+	<input type="hidden" name="order" value="">
+	<input type="hidden" name="man" value="">
+	<input type="hidden" name="titleid" value="">
+	<input type="hidden" name="gnocntcd" value="">
+	<input type="hidden" name="gcntcd" value="">
+	<input type="hidden" name="gtype" value="">
+	<input type="hidden" name="searching" value="0">
+	<input type="hidden" name="menukbn" value="">
+	<input type="hidden" name="subkbn" value="">
+	<input type="hidden" name="histname" value="">
+	<input type="hidden" name="histnum" value="">
+	<input type="hidden" name="listtype" value="">
+</form>
+<form name="searchdetail" action="searchdetail.do" target="_self" method="post">
+	<input type="hidden" name="screen" value="">
+	<input type="hidden" name="listpage" value="">
+	<input type="hidden" name="biblioid" value="384834">
+	<input type="hidden" name="rownum" value="0">
+	<input type="hidden" name="allcount" value="">
+	<input type="hidden" name="count" value="999">
+	<input type="hidden" name="page" value="">
+	<input type="hidden" name="histnum" value="1">
+	<input type="hidden" name="listtype" value="">
+</form>
+<form name="regist" action="rsvcheckbook.do" target="_self" method="post">
+	<input type="hidden" name="reserve_type" value="">
+</form>
+
+<form name="relatedProductDetail" action="searchdetail.do" target="_self" method="post">
+	<input type="hidden" name="biblioid" value="">
+	<input type="hidden" name="count" value="999">
+	<input type="hidden" name="screen" value="384834">
+	<input type="hidden" name="histnum" value="1">
+	<input type="hidden" name="listtype" value="">
+	<input type="hidden" name="isRelatedProduct" value="">
+</form>
+	<!-- #container -->
+	<div id="container">
+		<!-- #left_col -->
+		<div id="left_menu">
+		<!-- メインメニュー -->
+	<div class="left_menu_title left_menu_top">
+		<img class="left_menu_cn_top_nw" src="adult/images/left_menu_title_loupe.png" alt="">メインメニュー
+	</div>
+	<div class="left_menu_cn">
+		<div class="left_menu_cn_top">
+			<img class="left_menu_cn_top_nw" src="adult/images/blank.png" alt="">
+			<img class="left_menu_cn_top_ne" src="adult/images/blank.png" alt="">
+		</div>
+		<ul>
+					<li><div class="left_menu_title">資料を探す</div></li>
+			<li>
+																								<a href="selectsearch.do?searchkbn=0&histnum=1" class="left_menu_anchor left_menu_anchor_1">簡　単　検　索</a>
+																				<a href="selectsearch.do?searchkbn=2&histnum=1" class="left_menu_anchor left_menu_anchor_1">詳しく探す</a>
+						</li>
+						<li><div class="left_menu_title">分類から探す</div></li>
+			<li>
+																																		<a href="searchgenre.do?type=1&histnum=1&menukbn=1" class="left_menu_anchor left_menu_anchor_1">新着資料から探す</a>
+																																									<a href="searchgenre.do?type=2&histnum=1&menukbn=1" class="left_menu_anchor left_menu_anchor_1">ベストリーダーから探す</a>
+																																				<a href="searchgenre.do?type=4&histnum=1&menukbn=1" class="left_menu_anchor left_menu_anchor_1">ベスト予約から探す</a>
+																																				<a href="searchgenre.do?type=6&histnum=1&menukbn=1" class="left_menu_anchor left_menu_anchor_1">日本十進分類から探す</a>
+																																				</li>
+						<li><div class="left_menu_title">雑誌を探す</div></li>
+			<li>
+																																<a href="searchzastitle.do?titlekey=a&count=10&histnum=1&menukbn=2" class="left_menu_anchor left_menu_anchor_1">雑誌タイトルから探す</a>
+																</li>
+								<li><div class="left_menu_title">利用照会</div></li>
+			<li>
+																																<a href="usermenu.do" class="left_menu_anchor left_menu_anchor_1">利用照会</a>
+																							<a href="rsvcart.do" class="left_menu_anchor left_menu_anchor_1">予約カート</a>
+								</li>
+			</ul>
+		<div class="left_menu_cn_bottom">
+			<img class="left_menu_cn_bottom_sw" src="adult/images/blank.png" alt="">
+			<img class="left_menu_cn_bottom_se" src="adult/images/blank.png" alt="">
+		</div>
+	</div>
+	<!-- /メインメニュー -->
+	<!-- サブメニュー -->
+	<div class="left_menu_title">
+		<img class="left_menu_cn_top_nw" src="adult/images/left_menu_title_book.png" alt="">サブメニュー
+	</div>
+	<div class="left_menu_cn">
+		<div class="left_menu_cn_top">
+			<img class="left_menu_cn_top_nw" src="adult/images/blank.png" alt="">
+			<img class="left_menu_cn_top_ne" src="adult/images/blank.png" alt="">
+		</div>
+																							<a href="pwdregist.do" class="left_menu_anchor left_menu_anchor_2">新規パスワード登録</a>
+																												<a href="library.do" class="left_menu_anchor left_menu_anchor_2">図書館カレンダー</a>
+																												<a href="inform.do" class="left_menu_anchor left_menu_anchor_2">お知らせ一覧</a>
+																														<div class="left_menu_cn_bottom">
+			<img class="left_menu_cn_bottom_sw" src="adult/images/blank.png" alt="">
+			<img class="left_menu_cn_bottom_se" src="adult/images/blank.png" alt="">
+		</div>
+	</div>
+	<!-- /サブメニュー -->
+	<!-- 表示切替 -->
+	<div class="left_menu_title">
+		<img class="left_menu_cn_top_nw" src="adult/images/left_menu_title_change.png" alt="">表示切替
+	</div>
+	<div class="left_menu_cn">
+		<div class="left_menu_cn_top">
+			<img class="left_menu_cn_top_nw" src="adult/images/blank.png" alt="">
+			<img class="left_menu_cn_top_ne" src="adult/images/blank.png" alt="">
+		</div>
+								<a href="index.do?target=child" target="_self" class="left_menu_anchor left_menu_anchor_3">こどもよう</a>
+							<div class="left_menu_cn_bottom">
+			<img class="left_menu_cn_bottom_sw" src="adult/images/blank.png" alt="">
+			<img class="left_menu_cn_bottom_se" src="adult/images/blank.png" alt="">
+		</div>
+	</div>
+	<!-- /文字変更 -->
+		</div>
+		<!-- /#left_col -->
+		<!-- #page_content -->
+		<div id="page_content">
+			<div class="page_content_title">
+				<h2>詳細情報です。</h2>
+				<div class="page_content_link">
+								<br>
+					</div>
+			</div>
+			<div class="page_trace">
+				<a href="index.do" target="_self">メインメニュー</a>
+						≫&nbsp;詳細
+						</div>
+			<div class="page_content_base">
+				<div class="page_content_frame">
+							<div class="title">
+						<img src="adult/images/blank.png" alt="" class="title_cart">
+						予約カート
+					</div>
+					<div style="background-color:#e9e9e9;;text-align:center;">
+								登録されている資料はありません。
+							</div>
+										</div>
+				<!-- /.page_content_frame -->
+				
+			</div>
+			<!-- /page_content_base -->	
+
+
+
+			<div class="page_content_base">
+				
+				<div class="page_content_frame">
+					<div class="page_content_frame_control page_content_frame_control_hdr">
+							<button type="button" class="btn_long" onclick="location.href='rsvcartadd.do'">カートに入れる</button>
+							<button type="button" name="btnAddFavorite" class="btn_long" onclick="location.href='favoriteadd.do?tilcod=384834';">お気に入りに入れる</button>
+					</div>
+					<!-- /.page_content_frame_control -->
+					<div class="title">
+						書誌情報
+
+																	</div>
+
+						<td>
+					<table class="list">
+							<tr>
+							<th class="w25">タイトル</th>
+							<td>
+								&#12523;&#12539;&#12467;&#12523;&#12499;&#12517;&#12472;&#12456;
+															</td>
+						</tr>
+									<tr>
+							<th class="w25">サブタイトル</th>
+							<td>
+													&#24314;&#31689;&#12539;&#23478;&#20855;&#12539;&#20154;&#38291;&#12539;&#26053;&#12398;&#20840;&#35352;&#37682;
+												</td>
+						</tr>
+											<tr>
+							<th>叢書名</th>
+							<td>
+									&#12456;&#12463;&#12473;&#12490;&#12524;&#12483;&#12472;&#12512;&#12483;&#12463;<br>
+										</td>
+						</tr>
+						<tr>
+							<th>出版者</th>
+							<td>
+											&#26481;&#20140;&#65306;&#12456;&#12463;&#12473;&#12490;&#12524;&#12483;&#12472;<br>
+											2002&#24180;07&#26376;
+							</td>
+						</tr>
+						<tr>
+							<th>その他</th>
+							<td>
+										&#12304;NDC&#65297;&#12305;523.35 &#12304;&#12469;&#12452;&#12474;&#12305;&#65299;&#65297;&#65347;&#65357; &#12304;&#12506;&#12540;&#12472;&#25968;&#12305;&#65298;&#65300;&#65296;&#65360;<br>
+											&#12304;&#20385;&#26684;&#12305;\2,400 &#12304;&#21033;&#29992;&#23550;&#35937;&#12305;&#19968;&#33324; &#12304;ISBN&#12305;4-7678-0243-1 &#12304;&#20214;&#21517;&#12305;&#12523;&#12539;&#12467;&#12523;&#12499;&#12517;&#12472;&#12456;(&#65433;&#65381;&#65402;&#65433;&#65419;&#65438;&#65389;&#65404;&#65438;&#65396;)
+				
+
+							</td>
+						</tr>
+						<tr>
+							<th>内容紹介</th>
+							<td>
+																&#12523;&#12539;&#12467;&#12523;&#12499;&#12517;&#12472;&#12456;&#12398;&#20840;&#12390;&#12364;&#12289;&#12371;&#12398;&#65297;&#20874;&#12395;&#20957;&#32302;&#12290;&#30959;&#23822;&#26032;&#12452;&#12531;&#12479;&#12499;&#12517;&#12540;&#12300;&#20693;&#12398;&#27770;&#23450;&#30340;&#30636;&#38291;&#12301;&#12289;&#12489;&#12452;&#12484;&#12539;&#26481;&#26041;&#12408;&#12398;&#26053;&#12398;&#12473;&#12465;&#12483;&#12481;&#25163;&#24086;&#12289;&#21021;&#26399;&#12398;&#26408;&#36896;&#24314;&#31689;&#12289;&#26360;&#12365;&#27531;&#12375;&#12383;&#35328;&#33865;&#12394;&#12393;&#35486;&#12425;&#12428;&#12374;&#12427;&#32032;&#38996;&#12289;&#30693;&#12425;&#12428;&#12374;&#12427;&#36920;&#35441;&#12364;&#12366;&#12387;&#12375;&#12426;&#12290;
+													</td>
+						</tr>
+
+
+					</table>
+
+
+				
+
+					<div class="title">
+						内容一覧
+					</div>
+					<table class="list">
+						<tr>
+							<th class="w05">番号</th>
+							<th class="w50">タイトル</th>
+							<th class="w45">著者・アーティスト</th>
+						</tr>
+								<tr>
+							<td class="center">1</td>
+									<td>&#24314;&#31689;&#12539;&#23478;&#20855;&#12539;&#20154;&#38291;&#12539;&#26053;&#12398;&#20840;&#35352;&#37682;</td>
+									<td>
+									</td>
+						</tr>
+							<tr>
+							<td class="center">2</td>
+									<td>&#12456;&#12463;&#12473;&#12490;&#12524;&#12483;&#12472;&#12512;&#12483;&#12463;</td>
+									<td>
+									</td>
+						</tr>
+						</table>
+					<div class="title">
+						資料毎の状態　予約数：<strong>0</strong>
+						貸出可能数：<strong>3</strong>
+						貸出件数：<strong>0</strong>
+					</div>
+					<table class="list">
+						<tr>
+							<th class="w05">番号</th>
+							<th class="w20">館</th>
+							<th class="w15">種別</th>
+							<th class="w15">場所（背ラベル）</th>
+							<th class="w30">状態</th>
+							<th class="w15">資料番号</th>
+						</tr>
+						<tr>
+							<td class="center">1</td>
+							<td>&#20013;&#22830;&#22259;&#26360;&#39208;<br></td>
+							<td class="center">&#19968;&#33324;<br></td>
+								<td class="center">&#20013;&#22830;3F&#38281;&#26550;<br>（523 &#65433;）</td>
+								<td>&#36024;&#20986;&#12391;&#12365;&#12414;&#12377;</td>
+							<td class="center">111151502</td>
+						</tr>
+						<tr>
+							<td class="center">2</td>
+							<td>&#22240;&#23798;&#22259;&#26360;&#39208;<br></td>
+							<td class="center">&#19968;&#33324;<br></td>
+								<td class="center">&#22240;&#23798;&#19968;&#33324;&#38283;<br>（523 &#65433;）</td>
+								<td>&#36024;&#20986;&#12391;&#12365;&#12414;&#12377;</td>
+							<td class="center">310438080</td>
+						</tr>
+						<tr>
+							<td class="center">3</td>
+							<td>&#28716;&#25144;&#30000;&#22259;&#26360;<br></td>
+							<td class="center">&#19968;&#33324;<br></td>
+								<td class="center">&#28716;&#25144;&#19968;&#33324;<br>（523 &#65433;）</td>
+								<td>&#36024;&#20986;&#12391;&#12365;&#12414;&#12377;</td>
+							<td class="center">610106684</td>
+						</tr>
+					</table>
+
+
+					<div class="page_content_frame_control page_content_frame_control_hdr">
+			<div class="title title_sim">
+				関連情報
+			</div>
+
+			<div id="carousel">
+				<div id="carouselList">
+					<ul id="relatedproduct" class="jcarousel-skin-ie7">
+						<li><p style="position:relative;top:45%;text-align:center"><img src=adult/images/loading-jc.gif></p></li>
+						<li><p style="position:relative;top:45%;text-align:center"><img src=adult/images/loading-jc.gif></p></li>
+						<li><p style="position:relative;top:45%;text-align:center"><img src=adult/images/loading-jc.gif></p></li>
+						<li><p style="position:relative;top:45%;text-align:center"><img src=adult/images/loading-jc.gif></p></li>
+						<li><p style="position:relative;top:45%;text-align:center"><img src=adult/images/loading-jc.gif></p></li>
+					</ul>
+				</div>
+			</div>
+
+					<div class="page_content_frame_control">
+							<button type="button" class="btn_long" onclick="location.href='rsvcartadd.do'">カートに入れる</button>
+							<button type="button" name="btnAddFavorite" class="btn_long" onclick="location.href='favoriteadd.do?tilcod=384834';">お気に入りに入れる</button>
+					</div>
+					<!-- /.page_content_frame_control -->
+									<br>
+				</div>
+				<!-- /.page_content_frame -->
+			</div>
+			<!-- /.page_content_base -->
+	<div class="footer_link">
+								<a href="/tosyokan/top.html" target="_top">ＨＯＭＥ</a>｜
+		<a href="#top" target="_self">ＴＯＰ</a>｜
+					<a href="index.do?target=child" target="_self">こどもよう</a>
+				｜
+				</div>
+			
+			<div class="amz_copyright">
+				Amazon、Amazonのロゴ、Amazon.co.jp、Amazon.co.jpのロゴは、Amazon.com, Inc.またはその関連会社の商標です。
+		</div>
+		</div>
+		<!-- #page_content -->
+	</div>
+	<!-- /#container -->
+</body>
+</html>
