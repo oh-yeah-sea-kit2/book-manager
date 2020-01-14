@@ -1,0 +1,93 @@
+@startuml
+
+title シーケンス図
+
+box "一般ユーザ" #LightBlue
+  participant "一般ユーザ" as user
+end box
+
+box "管理者ユーザ" #LightBlue
+  participant "管理者ユーザ" as admin
+end box
+
+box "書籍管理システム" #LightSkyBlue
+  participant "フロント" as front
+  participant "API" as api
+  participant "DB" as db
+end box
+
+box "外部サービス" #LightGreen
+  participant "Firebase Auth" as firebase
+  participant "OpenBD" as openbd
+end box
+
+' ## 一般ユーザ
+group ログイン
+  user <-> front : ログイン
+  front <-> api : login API
+  api <-> firebase : 認証
+  api <-> db : ログイン履歴格納
+end
+
+group ログアウト
+  user <-> front : ログアウト
+  front <-> api : logout API
+  api <-> firebase : 
+end
+
+' - 書籍
+  ' - 検索
+group 本を検索
+  user <-> front: 本を検索
+  front <-> api : book search API
+  api <-> db : 
+end
+
+  ' - 借りる
+group 本を借りる
+  user <-> front : 本を借りる
+  front <-> api : book rental API
+  api <-> db : 
+end
+
+  ' - 返す
+group 本を返す
+  user <-> front : 本を返す
+  front <-> api : book return API
+  api <-> db : 
+end
+
+
+' ## 管理者ユーザ
+' - ユーザ
+'   - 検索
+group ユーザ検索
+  admin <-> front : ユーザ検索
+  front <-> api : user search API
+  api <-> db : 
+end
+
+' - 書籍
+'   - 登録（バーコード、手動）
+group ユーザ登録
+  admin <-> front : 書籍登録
+  front <-> api : book regist API
+  api <-> openbd : 
+  api <-> db : 
+end
+
+'   - 編集、削除
+group ユーザ編集、削除
+  admin <-> front : 書籍編集
+  front <-> api : book edit API
+  api <-> db : 
+end
+
+' - 貸出返却履歴一覧
+group 貸出返却履歴
+  admin <-> front : 貸出返却履歴一覧
+  front <-> api : history API
+  api <-> db : 
+end
+
+@enduml
